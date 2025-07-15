@@ -1,0 +1,220 @@
+''============================================================================================
+''****************
+''Business requirement: Medicine System Automation
+''Any types of Excel Automation, Report, Dashboard, VBA, Macros, MIS, Adv. Excel, SQL, Web Development using Django please contact me
+''Name:Mahetab
+''mahetabforwork@gmail.com
+''Mob:+91 9545302653
+
+''****************
+''============================================================================================
+
+
+'Option Explicit
+Option Base 1
+
+Sub START_VBA_CODE()
+    Call Main_EssentialMedicine_ArrayDemo
+End Sub
+
+Sub Main_EssentialMedicine_ArrayDemo()
+    
+    
+    ThisWorkbook.Activate
+    Call application_Disable
+    
+    Dim shtED, shtPhp As Worksheet
+    
+    Set shtED = Sheets("Essential Drugs List")
+    Set shtPhp = Sheets("PHP")
+    
+    
+    
+    Dim array_EssDrug() As String ''array decalaration
+    Dim lRowE, lColE, i, j As Long
+    
+    lRowE = Sheets("Essential Drugs List").Range("A104856").End(xlUp).Row - 1
+    lColE = Sheets("Essential Drugs List").Range("XFD1").End(xlToLeft).Column
+    
+    ReDim array_EssDrug(lRowE, lColE) ''array creation
+    
+  ''------- 1st Array
+  
+    For i = 1 To UBound(array_EssDrug)
+            
+            For j = 1 To lColE
+            
+                array_EssDrug(i, j) = LCase(shtED.Cells(i + 1, j).Value)
+                
+            Next j
+            
+    Next i
+    
+    
+  ''------- 2nd Array
+  
+  Dim array_php() As String
+  Dim lRowPhp, lColPhp As Long
+  
+  lRowPhp = Sheets("PHP").Range("E1048576").End(xlUp).Row - 1
+  lColPhp = Sheets("PHP").Range("XFD1").End(xlToLeft).Column
+  
+  ReDim array_php(lRowPhp, lColPhp)
+  
+    For i = 1 To UBound(array_php)
+    
+            For j = 1 To lColPhp
+                
+                array_php(i, j) = LCase(shtPhp.Cells(i + 1, j).Value)
+                
+            Next j
+    
+    Next i
+    
+Dim ColIncrment, currentCol, TempCurrentCol As Long
+ColIncrment = 3
+currentCol = 0
+TempCurrentCol = 0
+
+  
+Dim ChColValue As String
+Dim k, m, iCnt As Long
+k = 0
+m = 0
+iCnt = 1
+  
+  ''-------Array Comparision
+       For i = 1 To UBound(array_EssDrug)
+             iCnt = i
+                For j = 1 To lColE
+                
+                    
+                    If array_EssDrug(i, ColIncrment) = "yes" Then
+                    
+                             currentCol = Cells(i, ColIncrment).Column
+                            
+                                If currentCol > 8 Then
+                                       GoTo endJ
+                                End If
+                                                   
+                            '/// write the whole code here
+                            
+                                    If currentCol = 3 Then
+                                        ChColValue = "0"
+                                    End If
+                                    
+                                    
+                                    If currentCol = 4 Then
+                                        ChColValue = "3x"
+                                    End If
+                                    
+                                    
+                                    If currentCol = 5 Then
+                                        ChColValue = "6"
+                                    End If
+                                    
+                                    
+                                    If currentCol = 6 Then
+                                        ChColValue = "30"
+                                    End If
+                                    
+                                    If currentCol = 7 Then
+                                        ChColValue = "200"
+                                    End If
+                                    
+                                    
+                                    If currentCol = 8 Then
+                                        ChColValue = "1000"
+                                    End If
+                                    
+                                    ''---PHP Sheet mactching start from here
+                                    
+                                           For k = 1 To UBound(array_php)
+    
+                                                        If InStr(array_php(k, 5), array_EssDrug(iCnt, 1)) > 0 And array_php(k, 6) = ChColValue Then
+                                                                 shtPhp.Range("J" & k + 1).Value = "Yes"
+                                                                  'GoTo IncI
+                                                        End If
+                                                        
+                                                  
+                                            Next k
+                                            
+                                    ''---PHP Sheet mactching end here
+                                    
+                    End If
+                         
+IncI:
+                        ColIncrment = ColIncrment + 1
+                        If ColIncrment > 8 Then
+                            ColIncrment = 3
+                            TempCurrentCol = 0
+                            currentCol = 0
+                            GoTo endJ
+                        End If
+                         
+                         
+                Next j
+endJ:
+        Next i
+  
+    
+    Call application_Enable
+    Range("A1").Select
+    
+    
+    Dim present As Boolean
+    present = True
+    
+    
+    
+    
+' //sheet "Essential Drugs List" column I code
+
+    For i = 1 To UBound(array_EssDrug)
+                present = True
+                                
+            For k = 1 To UBound(array_php)
+
+                 If InStr(array_php(k, 5), array_EssDrug(i, 1)) > 0 Then
+                    present = False
+                    Exit For
+                 End If
+                 
+            Next k
+
+                 If present = False Then
+                    Sheets("Essential Drugs List").Range("I" & i + 1).Value = "Present"
+                 Else
+                    Sheets("Essential Drugs List").Range("I" & i + 1).Value = "NA"
+                 End If
+                 
+
+
+    Next i
+
+    
+    ThisWorkbook.Save
+    'ActiveWorkbook.Save
+    MsgBox ("VBA Macro Code Run Successfuly !!! Enjoy!")
+    
+End Sub
+
+Sub application_Disable()
+    
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    Application.Calculation = xlCalculationManual
+    
+End Sub
+
+Sub application_Enable()
+    
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    Application.Calculation = xlCalculationAutomatic
+    
+End Sub
+
+
+
+
