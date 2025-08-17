@@ -225,8 +225,8 @@ lRow = Sheets("PHP").Range("A1048576").End(xlUp).Row
 
 For i = 2 To lRow
         
-        If Range("K" & i).Value = "" Then
-            Range("K" & i).Value = "No"
+        If Sheets("PHP").Range("K" & i).Value = "" Then
+            Sheets("PHP").Range("K" & i).Value = "No"
         End If
         
 Next i
